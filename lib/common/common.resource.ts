@@ -1,5 +1,7 @@
 import client = require("@sendgrid/client");
+import {ResponseError} from "@sendgrid/helpers/classes";
 import { ClientRequest } from "@sendgrid/client/src/request";
+import { ClientResponse } from "@sendgrid/client/src/response";
 
 export namespace resource {
   export namespace Mail {
@@ -219,14 +221,31 @@ export namespace resource {
       };
     }
 
-    export function send(model: MailData) {
+    export function send(model: MailData): Promise<[ClientResponse,any]> {
       const data: ClientRequest = {
         method: "POST",
         url: "v3/mail/send",
         body: model,
       };
 
-      return client.request(data);
+      /*
+      client.request(data).then((result:ClientResponse) => {
+          resolve(result);
+        }).catch((err) => {
+          reject(err);
+        })
+        */
+
+      return new Promise((resolve, reject) => {
+        client.request(data, (err:ResponseError, resp: [ClientResponse,any])=> {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve(resp);
+          }
+        })
+      });
     }
   }
 }

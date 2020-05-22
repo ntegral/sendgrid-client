@@ -12,7 +12,16 @@ var resource;
                 url: "v3/mail/send",
                 body: model,
             };
-            return client.request(data);
+            return new Promise((resolve, reject) => {
+                client.request(data, (err, resp) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        resolve(resp);
+                    }
+                });
+            });
         }
         Mail.send = send;
     })(Mail = resource.Mail || (resource.Mail = {}));

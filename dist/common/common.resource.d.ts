@@ -1,3 +1,4 @@
+import { ClientResponse } from "@sendgrid/client/src/response";
 export declare namespace resource {
     namespace Mail {
         type MimeType = "text/plain" | "text/html" | "image/gif" | "image/png" | "image/tiff";
@@ -99,6 +100,6 @@ export declare namespace resource {
                 ganalytics?: GAnalytics;
             };
         }
-        function send(model: MailData): Promise<[import("@sendgrid/client/src/response").ClientResponse, any]>;
+        function send(model: MailData): Promise<[ClientResponse, any]>;
     }
 }
